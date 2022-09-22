@@ -1,12 +1,20 @@
 def valid_string?(string)
-    match_count = 0
-  
-    string.each_char do |c|
-      match_count += 1 if [ '[', '{', '(' ].include?(c)
-      match_count -= 1 if [ ']', '}', ')' ].include?(c)
-    end
-  
-    return match_count == 0
+  return true if string.empty?
+  array = []
+  string.each_char do |c|
+      case c
+      when '(', '{', '['
+          array.push(c)
+      when ')'
+          return false if array.pop() != '('
+      when '}'
+          return false if array.pop() != '{'
+      when ']'
+          return false if array.pop() != '['
+      end
+  end
+  return array.empty?
 end
 
-puts valid_string?("([]{[]})")
+puts valid_string?("{([)()])}")
+
